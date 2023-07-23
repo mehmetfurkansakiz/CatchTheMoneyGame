@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     var remainingTimeTimer = Timer()
     var moneyTimer = Timer()
     var remainingTime = 30
+    var highScore = 0
     var topMargin: CGFloat = 100 // 100 pixel from top
     
     // Views
@@ -37,6 +38,10 @@ class ViewController: UIViewController {
         
         // Score
         scoreLabel.text = "Score: \(score)"
+        
+        // HighScore
+        highScore = UserDefaults.standard.integer(forKey: "HighScore")
+        highScoreLabel.text = "High Score: \(highScore)"
         
         // Images
 //        money1.isUserInteractionEnabled = true
@@ -84,11 +89,19 @@ class ViewController: UIViewController {
         if remainingTime == 0 {
             remainingTimeTimer.invalidate()
             moneyTimer.invalidate()
+            
+            // Check if the current score is higher than the stored high score
+            if score > highScore {
+                highScore = score
+                highScoreLabel.text = "Highscore: \(highScore)"
+                UserDefaults.standard.set(highScore, forKey: "HighScore")
+            }
+            
             let alert = UIAlertController(title: "Time's Up", message: "Score: \(score)", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             let replayAction = UIAlertAction(title: "Try Again!", style: .default) { UIAlertAction in
-                // Replay function
                 
+                // Replay function
                 self.score = 0
                 self.scoreLabel.text = "Score: \(self.score)"
                 self.remainingTime = 30
