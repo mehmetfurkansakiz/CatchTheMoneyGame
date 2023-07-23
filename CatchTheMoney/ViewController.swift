@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     
     // Variables
     var score = 0
-    var timer = Timer()
+    var remainingTimeTimer = Timer()
     var remainingTime = 30
     var topMargin: CGFloat = 100 // 100 pixel from top
     
@@ -69,25 +69,19 @@ class ViewController: UIViewController {
 //        money9.addGestureRecognizer(recognizer9)
         
         // Remaining Time Timer
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(remainingTimeFunction), userInfo: nil, repeats: true)
+        remainingTimeTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(remainingTimeFunction), userInfo: nil, repeats: true)
         
         // Money Spawn Timer
         Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(spawnMoney), userInfo: nil, repeats: true)
     }
     
-    // Increase Score Function
-//    @objc func increaseScore() {
-//        score += 1
-//        scoreLabel.text = "Score: \(score)"
-//    }
-    //
     @objc func remainingTimeFunction() {
         
         remainingTime -= 1
         timeLabel.text = "\(remainingTime)"
         
         if remainingTime == 0 {
-            timer.invalidate()
+            remainingTimeTimer.invalidate()
             let alert = UIAlertController(title: "Time's Up", message: "Score: \(score)", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             let replayAction = UIAlertAction(title: "Try Again!", style: .default) { UIAlertAction in
@@ -100,15 +94,45 @@ class ViewController: UIViewController {
         }
     }
     
+    @objc func checkForTimeBonus() {
+        // Check if the score is a multiple of 7
+        if score % 7 == 0 {
+            spawnTimeBonus()
+        }
+    }
+    
+    @objc func spawnTimeBonus() {
+        // Define the size of the time bonus image and set random X and Y coordinates, but limit the Y coordinate to be below the top 200 pixels.
+        let timeBonusSize = CGSize(width: 75, height: 75)
+        let randomX = CGFloat.random(in: 0...(gameView.frame.width - timeBonusSize.width))
+        let randomY = CGFloat.random(in: topMargin...(gameView.frame.height - topMargin - timeBonusSize.height))
+        let timeBonusFrame = CGRect(x: randomX, y: randomY, width: timeBonusSize.width, height: timeBonusSize.height)
+        
+        let timeBonusImage = UIImage(named: "timeBonusPic")
+        let timeBonusImageView = UIImageView(frame: timeBonusFrame)
+        timeBonusImageView.image = timeBonusImage
+        timeBonusImageView.isUserInteractionEnabled = true
+        gameView.addSubview(timeBonusImageView)
+        
+        // Remove the time bonus image from the view after 1 second and add 5 to the timer
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.25) {
+            self.addTime()
+            timeBonusImageView.removeFromSuperview()
+        }
+    }
+    // Add 5 second to the remaining time
+    func addTime() {
+            remainingTime += 5
+        }
+    
     @objc func spawnMoney() {
-        //
         let moneySize = CGSize(width: 75, height: 75)
         let randomX = CGFloat.random(in: 0...(gameView.frame.width - moneySize.width))
         let randomY = CGFloat.random(in: topMargin...(gameView.frame.height - topMargin - moneySize.height))
         let moneyFrame = CGRect(x: randomX, y: randomY, width: moneySize.width, height: moneySize.height)
         
         // Money imeage creation
-        let moneyImage = UIImage(named: "moneyPic") // Money karakterinin resminin adı
+        let moneyImage = UIImage(named: "moneyPic")
         let moneyImageView = UIImageView(frame: moneyFrame)
         moneyImageView.image = moneyImage
         moneyImageView.isUserInteractionEnabled = true
@@ -128,6 +152,7 @@ class ViewController: UIViewController {
                 touchedView.removeFromSuperview()
                 score += 1
                 updateScoreLabel()
+                checkForTimeBonus()
             }
         }
     }
