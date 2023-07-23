@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     // Variables
     var score = 0
     var remainingTimeTimer = Timer()
+    var moneyTimer = Timer()
     var remainingTime = 30
     var topMargin: CGFloat = 100 // 100 pixel from top
     
@@ -72,7 +73,7 @@ class ViewController: UIViewController {
         remainingTimeTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(remainingTimeFunction), userInfo: nil, repeats: true)
         
         // Money Spawn Timer
-        Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(spawnMoney), userInfo: nil, repeats: true)
+        moneyTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(spawnMoney), userInfo: nil, repeats: true)
     }
     
     @objc func remainingTimeFunction() {
@@ -82,10 +83,25 @@ class ViewController: UIViewController {
         
         if remainingTime == 0 {
             remainingTimeTimer.invalidate()
+            moneyTimer.invalidate()
             let alert = UIAlertController(title: "Time's Up", message: "Score: \(score)", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             let replayAction = UIAlertAction(title: "Try Again!", style: .default) { UIAlertAction in
-                //replay function
+                // Replay function
+                
+                self.score = 0
+                self.scoreLabel.text = "Score: \(self.score)"
+                self.remainingTime = 30
+                self.timeLabel.text = "\(self.remainingTime)"
+                
+                // Restart timers after try again button
+                // Remaining Time Timer
+                self.remainingTimeTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.remainingTimeFunction), userInfo: nil, repeats: true)
+                
+                // Money Spawn Timer
+                self.moneyTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.spawnMoney), userInfo: nil, repeats: true)
+
+                
             }
             
             alert.addAction(okAction)
