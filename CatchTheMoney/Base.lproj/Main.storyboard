@@ -35,14 +35,31 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C87-dd-jCt">
+                                <rect key="frame" x="170" y="427" width="75" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43" id="bAX-LM-Yco"/>
+                                    <constraint firstAttribute="width" constant="75" id="qks-QN-ucE"/>
+                                </constraints>
+                                <buttonConfiguration key="configuration" style="plain" title="Start">
+                                    <fontDescription key="titleFontDescription" type="system" pointSize="24"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="startButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kBw-0x-MOD"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="k81-bq-7mO" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="2Vm-y8-GHu"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="C87-dd-jCt" secondAttribute="trailing" constant="169" id="Awg-07-XHn"/>
                             <constraint firstItem="OOB-Iz-NMQ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="42" id="JTQ-jy-8kd"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OOB-Iz-NMQ" secondAttribute="trailing" constant="32" id="Pyr-Ba-eoE"/>
+                            <constraint firstItem="C87-dd-jCt" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="170" id="WrS-et-f2Z"/>
                             <constraint firstItem="skn-Zf-aBs" firstAttribute="top" secondItem="k81-bq-7mO" secondAttribute="bottom" constant="8" symbolic="YES" id="j5r-m5-egd"/>
+                            <constraint firstItem="C87-dd-jCt" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="379" id="kdB-ye-CBW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="C87-dd-jCt" secondAttribute="bottom" constant="392" id="oER-aX-d7h"/>
                             <constraint firstItem="k81-bq-7mO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="w2i-Bn-B3h"/>
                             <constraint firstItem="skn-Zf-aBs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="yhr-j5-OQf"/>
                         </constraints>
@@ -51,6 +68,7 @@
                         <outlet property="gameView" destination="8bC-Xf-vdC" id="h9h-mz-75y"/>
                         <outlet property="highScoreLabel" destination="k81-bq-7mO" id="LBp-29-tgO"/>
                         <outlet property="scoreLabel" destination="skn-Zf-aBs" id="RdJ-9t-Noq"/>
+                        <outlet property="startButton" destination="C87-dd-jCt" id="8Ax-cr-jtN"/>
                         <outlet property="timeLabel" destination="OOB-Iz-NMQ" id="JFi-BQ-1VZ"/>
                     </connections>
                 </viewController>
